@@ -1,0 +1,490 @@
+Changes Made:
+ * Event Listeners (addEventListener): Attached explicit click handlers to language buttons (EN, RU, ZH) and theme toggle (Dark / Light).
+ * DOM Ready Initialization: Enclosed scripts inside DOMContentLoaded to guarantee that elements exist before attached click events run.
+ * Improved Button Selectors: Used explicit data-lang attributes for smooth language toggles.
+Below is the updated code:
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akmalkhon Ibragimov - CV</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --border: #334155;
+            --shadow: rgba(0, 0, 0, 0.4);
+            --badge-bg: #0f172a;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent: #0284c7;
+            --accent-hover: #0369a1;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --badge-bg: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .lang-switcher {
+            display: flex;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 6px 14px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            user-select: none;
+        }
+
+        .lang-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .lang-btn.active {
+            background-color: var(--accent);
+            color: #ffffff !important;
+        }
+
+        .theme-toggle {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            user-select: none;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .profile-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px var(--shadow);
+        }
+
+        .profile-header h1 {
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .objective-box {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr 2fr;
+            }
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px var(--shadow);
+        }
+
+        .skill-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .skill-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--badge-bg);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 2px solid var(--border);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--accent);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1.05rem;
+        }
+
+        .item-date {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 600;
+            background: var(--badge-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .item-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-details {
+            list-style: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .item-details li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .item-details li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">Interactive CV</a>
+            <div class="controls">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="ru">RU</button>
+                    <button class="lang-btn" data-lang="zh">ZH</button>
+                </div>
+                <button class="theme-toggle" id="themeBtn">
+                    <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="profile-card">
+            <div class="profile-header">
+                <h1 id="name">Akmalkhon Ibragimov</h1>
+                <div class="contact-info">
+                    <span>📱 +86 13121709422</span>
+                    <span>✉️ akmali13@hotmail.com</span>
+                    <span>💻 Technical Stack: Python, GLSL/HLSL, UE5, TouchDesigner, P5.js, AWS</span>
+                </div>
+            </div>
+            <div class="objective-box" id="objective"></div>
+        </section>
+
+        <div class="grid">
+            <div>
+                <div class="card">
+                    <div class="section-title" id="title-skills">Technical Skills</div>
+                    <div id="skills-container"></div>
+                </div>
+
+                <div class="card">
+                    <div class="section-title" id="title-education">Education</div>
+                    <div id="education-container"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="card">
+                    <div class="section-title" id="title-experience">Experience</div>
+                    <div id="experience-container"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const cvData = {
+            en: {
+                name: "Akmalkhon Ibragimov",
+                objective: "Recent graduate and current Animation Art student seeking an internship. Aiming to combine 5+ years of technical web/cloud experience with real-time rendering expertise to build high-performance visual analytics for ByteDance's global ecosystem.",
+                titles: { skills: "Technical Skills", education: "Education", experience: "Experience" },
+                skills: [
+                    { category: "Visualization", items: ["Touch Designer", "Unreal Engine 5", "P5.js", "Real-Time Data Mapping"] },
+                    { category: "Coding", items: ["Python (Data processing)", "GLSL/HLSL (Shaders)", "JavaScript"] },
+                    { category: "Infrastructure", items: ["AWS Cloud Management", "CI/CD", "System Admin", "Linux"] },
+                    { category: "Design", items: ["Motion Design", "3D Modeling", "Procedural Animation"] }
+                ],
+                education: [
+                    { title: "Jilin Animation Institute", subtitle: "B.A. in Animation Art", date: "2022 - 2026", details: ["Specializing in interactive installations and real-time visual systems.", "Applying technical logic (Python/Shaders) to artistic output."] },
+                    { title: "Beijing Film Academy", subtitle: "Film Production Studies", date: "2018", details: ["Focused on visual narrative structure and cinematography."] },
+                    { title: "Bluegrass Community College", subtitle: "Telecommunications Engineering", date: "2009", details: [] },
+                    { title: "Russian Tajik Slavonic University", subtitle: "Diplomacy", date: "2006", details: [] }
+                ],
+                experience: [
+                    { title: "Speechtopia Beijing Tech Ltd.", subtitle: "Systems & Infrastructure Admin", date: "2019 - 2020", details: ["Managed AWS cloud infrastructure and assisted in system administration for a tech-focused startup.", "Handled CI/CD code review and approval, ensuring stable deployment pipelines."] },
+                    { title: "2020tesol.com", subtitle: "Web Platform Developer", date: "2015 - 2018", details: ["Developed a web platform for educators, managing the full stack from database to UI."] },
+                    { title: "Freelance Web Developer", subtitle: "Full-Stack Developer", date: "2009 - 2015", details: ["Developed diverse web solutions, mastering frontend interaction."] }
+                ]
+            },
+            ru: {
+                name: "Акмалхон Ибрагимов",
+                objective: "Выпускник и студент специальности «Анимационное искусство», ищущий стажировку. Стремлюсь объединить более 5 лет опыта работы с веб/облачными технологиями и экспертизу в области рендеринга в реальном времени для создания высокопроизводительной визуальной аналитики для глобальной экосистемы ByteDance.",
+                titles: { skills: "Технические навыки", education: "Образование", experience: "Опыт работы" },
+                skills: [
+                    { category: "Визуализация", items: ["Touch Designer", "Unreal Engine 5", "P5.js", "Маппинг данных"] },
+                    { category: "Программирование", items: ["Python (Обработка данных)", "GLSL/HLSL (Шейдеры)", "JavaScript"] },
+                    { category: "Инфраструктура", items: ["AWS (Управление облаком)", "CI/CD", "Системное администрирование", "Linux"] },
+                    { category: "Дизайн", items: ["Моушн-дизайн", "3D-моделирование", "Процедурная анимация"] }
+                ],
+                education: [
+                    { title: "Цзилиньский институт анимации", subtitle: "Бакалавр анимационного искусства", date: "2022 - 2026", details: ["Специализация на интерактивных инсталляциях и визуальных системах реального времени.", "Применение технической логики (Python/Шейдеры) к художественному результату."] },
+                    { title: "Пекинская киноакадемия", subtitle: "Изучение кинопроизводства", date: "2018", details: ["Фокус на визуальной структуре повествования и операторском искусстве."] },
+                    { title: "Общинный колледж Блуграсс", subtitle: "Телекоммуникационная инженерия", date: "2009", details: [] },
+                    { title: "Российско-Таджикский (Славянский) университет", subtitle: "Дипломатия", date: "2006", details: [] }
+                ],
+                experience: [
+                    { title: "Speechtopia Beijing Tech Ltd.", subtitle: "Администратор систем и инфраструктуры", date: "2019 - 2020", details: ["Управлял облачной инфраструктурой AWS и помогал в системном администрировании технологического стартапа.", "Отвечал за проверку и утверждение кода CI/CD, обеспечивая стабильность пайплайнов развертывания."] },
+                    { title: "2020tesol.com", subtitle: "Разработчик веб-платформы", date: "2015 - 2018", details: ["Разработал веб-платформу для преподавателей, управляя полным стеком от базы данных до пользовательского интерфейса."] },
+                    { title: "Фриланс веб-разработчик", subtitle: "Full-Stack Разработчик", date: "2009 - 2015", details: ["Разрабатывал различные веб-решения, освоив фронтенд-взаимодействие."] }
+                ]
+            },
+            zh: {
+                name: "阿克马尔洪·伊布拉吉莫夫",
+                objective: "动画艺术专业在校生/应届毕业生，寻求实习岗位。旨在结合5年以上的 Web/云端技术经验与实时渲染专业知识，为字节跳动 (ByteDance) 全球生态系统构建高性能数据可视化分析系统。",
+                titles: { skills: "专业技能", education: "教育背景", experience: "工作经历" },
+                skills: [
+                    { category: "数据可视化", items: ["Touch Designer", "Unreal Engine 5", "P5.js", "实时数据映射"] },
+                    { category: "编程语言", items: ["Python (数据处理)", "GLSL/HLSL (自定义着色器)", "JavaScript"] },
+                    { category: "基础设施", items: ["AWS 云管理", "CI/CD", "系统管理", "Linux"] },
+                    { category: "设计能力", items: ["动态设计 (Motion Design)", "3D 建模", "程序化动画"] }
+                ],
+                education: [
+                    { title: "吉林动画学院", subtitle: "动画艺术 学士", date: "2022 - 2026", details: ["主修交互式装置与实时视觉系统。", "将技术逻辑 (Python/Shaders) 应用于艺术创作。"] },
+                    { title: "北京电影学院", subtitle: "电影制作进修", date: "2018", details: ["专注于视觉叙事结构与摄影术。"] },
+                    { title: "蓝草社区技术学院", subtitle: "电信工程", date: "2009", details: [] },
+                    { title: "俄塔斯拉夫大学", subtitle: "外交学", date: "2006", details: [] }
+                ],
+                experience: [
+                    { title: "Speechtopia Beijing Tech Ltd.", subtitle: "系统与基础设施管理员", date: "2019 - 2020", details: ["管理 AWS 云基础设施，并为初创科技公司提供系统管理支持。", "负责 CI/CD 代码审查与批准，确保部署流水线的稳定性。"] },
+                    { title: "2020tesol.com", subtitle: "Web 平台开发人员", date: "2015 - 2018", details: ["为教育工作者开发 Web 平台，负责从数据库到 UI 的全栈开发。"] },
+                    { title: "自由 Web 开发人员", subtitle: "全栈 Web 开发", date: "2009 - 2015", details: ["开发多样化的 Web 解决方案，精通前端交互设计。"] }
+                ]
+            }
+        };
+
+        function setLanguage(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+
+            const data = cvData[lang];
+            document.getElementById('name').textContent = data.name;
+            document.getElementById('objective').textContent = data.objective;
+            document.getElementById('title-skills').textContent = data.titles.skills;
+            document.getElementById('title-education').textContent = data.titles.education;
+            document.getElementById('title-experience').textContent = data.titles.experience;
+
+            document.getElementById('skills-container').innerHTML = data.skills.map(group => `
+                <div class="skill-group">
+                    <span class="skill-label">${group.category}</span>
+                    <div class="skill-tags">
+                        ${group.items.map(item => `<span class="tag">${item}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('education-container').innerHTML = data.education.map(item => `
+                <div class="timeline-item">
+                    <div class="item-header">
+                        <span class="item-title">${item.title}</span>
+                        <span class="item-date">${item.date}</span>
+                    </div>
+                    <div class="item-subtitle">${item.subtitle}</div>
+                    ${item.details.length > 0 ? `<ul class="item-details">${item.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
+                </div>
+            `).join('');
+
+            document.getElementById('experience-container').innerHTML = data.experience.map(item => `
+                <div class="timeline-item">
+                    <div class="item-header">
+                        <span class="item-title">${item.title}</span>
+                        <span class="item-date">${item.date}</span>
+                    </div>
+                    <div class="item-subtitle">${item.subtitle}</div>
+                    <ul class="item-details">${item.details.map(d => `<li>${d}</li>`).join('')}</ul>
+                </div>
+            `).join('');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            document.getElementById('themeIcon').textContent = newTheme === 'dark' ? '🌙' : '☀️';
+            document.getElementById('themeText').textContent = newTheme === 'dark' ? 'Dark' : 'Light';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const lang = e.target.getAttribute('data-lang');
+                    setLanguage(lang);
+                });
+            });
+
+            document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+
+            setLanguage('en');
+        });
+    </script>
+</body>
+</html>
+
