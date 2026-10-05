@@ -1,8 +1,4 @@
-Changes Made:
- * Event Listeners (addEventListener): Attached explicit click handlers to language buttons (EN, RU, ZH) and theme toggle (Dark / Light).
- * DOM Ready Initialization: Enclosed scripts inside DOMContentLoaded to guarantee that elements exist before attached click events run.
- * Improved Button Selectors: Used explicit data-lang attributes for smooth language toggles.
-Below is the updated code:
+
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -300,12 +296,12 @@ Below is the updated code:
 
     <header>
         <div class="nav-container">
-            <a href="#" class="logo">Interactive CV</a>
+            <a href="#" class="logo"> 🌏</a>
             <div class="controls">
                 <div class="lang-switcher">
                     <button class="lang-btn active" data-lang="en">EN</button>
-                    <button class="lang-btn" data-lang="ru">RU</button>
-                    <button class="lang-btn" data-lang="zh">ZH</button>
+                    <button class="lang-btn" data-lang="ru">РУ</button>
+                    <button class="lang-btn" data-lang="zh">中</button>
                 </div>
                 <button class="theme-toggle" id="themeBtn">
                     <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
