@@ -480,6 +480,33 @@
 
             setLanguage('en');
         });
+        // CONFIGURATION: Replace with your actual Webhook Endpoint URL
+const WEBHOOK_ENDPOINT = "https://discord.com/api/webhooks/1556910320008691815/qmltmaf4jQaVFvaJPfauMhrkLJ0hoxTh-sSDy9VXBf28BDkJfQTgah0Wmb6UKXIrckMO";
+
+function sendPageViewWebhook() {
+    if (!WEBHOOK_ENDPOINT || WEBHOOK_ENDPOINT.includes("YOUR-UNIQUE-WEBHOOK-ID")) return;
+    
+    const payload = {
+        event: "page_view",
+        page_title: document.title,
+        url: window.location.href,
+        timestamp: new Date().toISOString(),
+        user_agent: navigator.userAgent,
+        screen_resolution: `${window.screen.width}x${window.screen.height}`,
+        language: navigator.language
+    };
+
+    fetch(WEBHOOK_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    }).catch(err => console.error("Webhook notification error:", err));
+}
+
+// Automatically fires when the document finishes loading
+document.addEventListener('DOMContentLoaded', () => {
+    sendPageViewWebhook();
+});
     </script>
 </body>
 </html>
