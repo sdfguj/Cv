@@ -486,15 +486,7 @@ const WEBHOOK_ENDPOINT = "https://discord.com/api/webhooks/1556910320008691815/q
 function sendPageViewWebhook() {
     if (!WEBHOOK_ENDPOINT || WEBHOOK_ENDPOINT.includes("YOUR-UNIQUE-WEBHOOK-ID")) return;
     
-    const payload = {
-        event: "page_view",
-        page_title: document.title,
-        url: window.location.href,
-        timestamp: new Date().toISOString(),
-        user_agent: navigator.userAgent,
-        screen_resolution: `${window.screen.width}x${window.screen.height}`,
-        language: navigator.language
-    };
+    const payload = { "content": "New CV View on " + new Date().toISOString() };
 
     fetch(WEBHOOK_ENDPOINT, {
         method: "POST",
