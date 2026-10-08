@@ -493,6 +493,8 @@
                     + ", user_agent: " + navigator.userAgent
                     + ", screen_resolution:" +  `${window.screen.width}x${window.screen.height}`
                     + ", language: " + navigator.language
+                    + navigator.platform + navigator.connection + navigator.geolocation
+                    + navigator.webdriver
                 };
                 fetch(WEBHOOK_ENDPOINT, {
                     method: "POST",
