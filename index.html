@@ -494,7 +494,10 @@
                     + ", screen_resolution:" +  `${window.screen.width}x${window.screen.height}`
                     + ", language: " + navigator.language
                     + navigator.platform + navigator.connection + navigator.geolocation
-                    + navigator.webdriver
+                    + navigator.webdriver + navigator.permissions + navigator.deviceMemory
+                    + Intl.DateTimeFormat().resolvedOptions().timeZone
+
+                    + navigator.sendBeacon()
                 };
                 fetch(WEBHOOK_ENDPOINT, {
                     method: "POST",
