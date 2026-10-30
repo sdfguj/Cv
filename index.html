@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Akmalkhon Ibragimov - CV</title>
     <style>
-         :root {
+     :root {
             --bg-gradient-start: #0a0f1d;
             --bg-gradient-end: #04060b;
             --glass-bg: rgba(255, 255, 255, 0.05);
@@ -501,25 +501,27 @@
                 border: 1px solid #ccc !important;
                 background: #f1f1f1 !important;
                 color: #000 !important;
+                opacity: 1 !important;
             }
             .item-title a {
                 color: #000 !important;
                 border-bottom: none !important;
+                opacity: 1 !important;
             }
             .item-details li::before,
             .timeline-item::before {
                 color: #000 !important;
+                opacity: 1 !important;
             }
             .timeline-item {
                 opacity: 1 !important;
             }
             /* Hide when printing */
-            @media print {
-                footer {
-                    display: none !important;
-                }
+            footer {
+                display: none !important;
             }
         }
+    }
     </style>
 </head>
 
@@ -534,7 +536,9 @@
         <div class="nav-container">
             <a href="#" class="logo">
                 Akmalkhon Ibragimov
+                <!-- LOGO -->
             </a>
+
             <div class="controls">
                 <div class="lang-switcher">
                     <button class="lang-btn active" data-lang="en">EN</button>
@@ -1106,6 +1110,8 @@
             // `).join('');
         }
 
+    
+
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
@@ -1125,7 +1131,7 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.3 });
+            }, { threshold: 0.15 });
 
             cards.forEach(card => observer.observe(card));
             entry.forEach(entry => observer.observe(entry));
@@ -1133,60 +1139,60 @@
 
         //--------new
         function setupExpandableContact() {
-        const toggleBtn = document.getElementById('toggleContactBtn');
-        const expandableSection = document.getElementById('expandableContact');
-        const sendBtn = document.getElementById('sendWebhookBtn');
-        const inputField = document.getElementById('webhookInput');
+            const toggleBtn = document.getElementById('toggleContactBtn');
+            const expandableSection = document.getElementById('expandableContact');
+            const sendBtn = document.getElementById('sendWebhookBtn');
+            const inputField = document.getElementById('webhookInput');
 
-        toggleBtn.addEventListener('click', () => {
-            expandableSection.classList.toggle('active');
-            toggleBtn.classList.toggle('expanded'); // <-- Toggles the transparent state
-        });
+            toggleBtn.addEventListener('click', () => {
+                expandableSection.classList.toggle('active');
+                toggleBtn.classList.toggle('expanded'); // <-- Toggles the transparent state
+            });
 
-        sendBtn.addEventListener('click', () => {
-        const messageText = inputField.value.trim();
-        if (!messageText) {
-            alert('Please enter a message before sending.');
-            return;
-        }
-
-        if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes("YOUR_DISCORD_WEBHOOK_ID")) {
-            alert('Discord Webhook URL is not configured yet. Please update DISCORD_WEBHOOK_URL in the script.');
-            return;
-        }
-
-        sendBtn.textContent = 'Sending...';
-        sendBtn.disabled = true;
-
-        const payload = {
-            content: `📩 **New CV Message:**\n> ${messageText}`
-        };
-
-        fetch(DISCORD_WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
-        .then(response => {
-            if (response.ok || response.status === 204) {
-                // alert('Message sent successfully to Discord!');
-                inputField.value = '';
-                expandableSection.classList.remove('active');
-                toggleBtn.classList.remove('expanded'); // <-- Reset button style on success
-            } else {
-                alert('Failed to send message. Check webhook URL.');
+            sendBtn.addEventListener('click', () => {
+            const messageText = inputField.value.trim();
+            if (!messageText) {
+                alert('Please enter a message before sending.');
+                return;
             }
-        })
-        .catch(err => {
-            console.error('Webhook error:', err);
-            alert('Error connecting to Discord webhook.');
-        })
-        .finally(() => {
-            sendBtn.textContent = 'Send Message';
-            sendBtn.disabled = false;
+
+            if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes("YOUR_DISCORD_WEBHOOK_ID")) {
+                alert('Discord Webhook URL is not configured yet. Please update DISCORD_WEBHOOK_URL in the script.');
+                return;
+            }
+
+            sendBtn.textContent = 'Sending...';
+            sendBtn.disabled = true;
+
+            const payload = {
+                content: `📩 **New CV Message:**\n> ${messageText}`
+            };
+
+            fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok || response.status === 204) {
+                    // alert('Message sent successfully to Discord!');
+                    inputField.value = '';
+                    expandableSection.classList.remove('active');
+                    toggleBtn.classList.remove('expanded'); // <-- Reset button style on success
+                } else {
+                    alert('Failed to send message. Check webhook URL.');
+                }
+            })
+            .catch(err => {
+                console.error('Webhook error:', err);
+                alert('Error connecting to Discord webhook.');
+            })
+            .finally(() => {
+                sendBtn.textContent = 'Send Message';
+                sendBtn.disabled = false;
+            });
         });
-    });
-}
+    }
         //--------old
         // function setupExpandableContact() {
         //     const toggleBtn = document.getElementById('toggleContactBtn');
@@ -1253,6 +1259,7 @@
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     setLanguage(e.target.getAttribute('data-lang'));
+                    setupIntersectionObserver();
                 });
             });
 
@@ -1264,6 +1271,7 @@
             setupExpandableContact();
             setupIntersectionObserver();
         });
+
 
         //pageview-webhook-start----------------
         const payload = {
