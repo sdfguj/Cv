@@ -44,7 +44,7 @@
             font-family: var(--font-family);
             background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
             color: var(--text-primary);
-            min-height: 100vh;
+            min-height: 110vh;
             overflow-x: hidden;
         }
         
@@ -53,7 +53,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 110vh;
             overflow: hidden;
             z-index: -1;
             pointer-events: none;
@@ -97,8 +97,8 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(5px);
             background: var(--glass-bg);
             border-bottom: 1px solid var(--glass-border);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
@@ -255,6 +255,14 @@
             transform: translateY(-2px);
             box-shadow: 0 15px 30px rgba(56, 189, 248, 0.5);
         }
+        /* State when the contact section is open */
+        
+        .ios-btn.expanded {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            box-shadow: none;
+        }
         /* Expanding Contact Section */
         
         .expandable-contact {
@@ -337,6 +345,13 @@
             padding-left: 1.75rem;
             margin-bottom: 1.75rem;
             border-left: 2px solid var(--glass-border);
+            opacity: 0;
+            transition: opacity 1.8s cubic-bezier(0.16, 1, 0.5, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
         }
         
         .timeline-item:last-child {
@@ -509,18 +524,20 @@
 
     <header>
         <div class="nav-container">
-            <a href="#" class="logo"></a>
+            <a href="#" class="logo">
+                Akmalkhon Ibragimov
+            </a>
             <div class="controls">
                 <div class="lang-switcher">
                     <button class="lang-btn active" data-lang="en">EN</button>
-                    <button class="lang-btn" data-lang="ru">РУ</button>
-                    <button class="lang-btn" data-lang="zh">中</button>
+                    <button class="lang-btn" data-lang="ru">RU</button>
+                    <button class="lang-btn" data-lang="zh">ZH</button>
                 </div>
                 <button class="action-btn" onclick="window.print()">
-                    <span id="printText">Print</span>
+                    <span id="printText">🖨️</span>
                 </button>
                 <button class="action-btn" id="themeBtn">
-                    <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
+                    <span id="themeIcon">🌙</span> <span id="themeText"></span>
                 </button>
             </div>
         </div>
@@ -551,25 +568,29 @@
             <div id="skills-container"></div>
         </section>
 
-        <section class="glass-card">
-            <div class="section-title" id="title-experience">Professional Experience & Timeline</div>
-            <div id="experience-container"></div>
-        </section>
-
-        <section class="glass-card">
-            <div class="section-title" id="title-education">Education & Academic Background</div>
-            <div id="education-container"></div>
-        </section>
+        <!-- <section class="glass-card"> -->
+        <div class="section-title" id="title-experience">Professional Experience & Timeline</div>
+        <div id="experience-container"></div>
+        <!-- </section> -->
 
         <footer>
+            <section class="glass-card">
+                <!-- <div class="section-title" id="title-education"></div> -->
+                <p>© 2026 I vibecoded this site with Gemini</p>
+
+                <div id="education-container"></div>
+            </section>
+        </footer>
+
+        <!-- <footer>
             <div class="footer-card">
                 <p>© 2026 I vibecoded this site with Gemini</p>
-                <!-- <ul class="footer-links">
+                <ul class="footer-links">
                     <li><a href="https://github.com/sdfguj/Cv/" target="_blank">GitHub Repository</a></li>
                     <li><a href="https://sdfguj.github.io/Cv/" target="_blank">Live Deployment</a></li>
-                </ul> -->
+                </ul>
             </div>
-        </footer>
+        </footer> -->
     </main>
 
     <script>
@@ -586,7 +607,7 @@
                 printText: "Print",
                 titles: {
                     skills: "Technical Skills",
-                    experience: "Professional Experience & Timeline",
+                    experience: "Professional Experience & Education",
                     education: "Education & Academic Background"
                 },
                 skills: [{
@@ -646,7 +667,7 @@
                         "Developed tailored corporate curricula directly inside companies recently acquired by U.S. parent corporations."
                     ]
                 }, {
-                    title: "Subway Vanlines",
+                    title: "Sunway Vanlines",
                     subtitle: "Interstate Logistics Subcontractor & Operations Manager",
                     date: "2013 - 2015",
                     details: [
@@ -735,8 +756,8 @@
                 printText: "Печать",
                 titles: {
                     skills: "Технические навыки",
-                    experience: "Профессиональный опыт и хронология",
-                    education: "Образование и академический фон"
+                    experience: "Профессиональный опыт и Образование",
+                    education: "Образование и академический опыт"
                 },
                 skills: [{
                     category: "Визуализация",
@@ -758,7 +779,7 @@
                     details: [
                         "Местоположение: Чанчунь / Пекин, Китай",
                         "Специализация на интерактивных инсталляциях, визуальных системах реального времени и процедурной анимации.",
-                        "Объединение 15+ лет международного, технического и логистического опыта с Python, GLSL/HLSL шейдерами, TouchDesigner и P5.js."
+                        "Объединение 15+ лет технического опыта с Python, GLSL/HLSL шейдерами, TouchDesigner и P5.js."
                     ]
                 }, {
                     title: "Speechtopia Beijing Tech Ltd.",
@@ -790,12 +811,12 @@
                     subtitle: "Преподаватель делового английского и корпоративный тренер",
                     date: "2015",
                     details: [
-                        "Местоположение: Жундиаи, Сан-Паулу, Бразилия",
+                        "Местоположение: Жундиаи, Сан-Пауло, Бразилия",
                         "Проводил занятия по деловому и разговорному английскому языку по телефону и на местах.",
                         "Разрабатывал специализированные корпоративные учебные программы для компаний, приобретенных американскими корпорациями."
                     ]
                 }, {
-                    title: "Subway Vanlines",
+                    title: "Sunway Vanlines",
                     subtitle: "Межрегиональный логистический субподрядчик",
                     date: "2013 - 2015",
                     details: [
@@ -944,7 +965,7 @@
                         "为被美国母公司收购的企业内部定制专属企业英语课程。"
                     ]
                 }, {
-                    title: "Subway Vanlines",
+                    title: "Sunway Vanlines",
                     subtitle: "跨州物流 subcontractor 与运营负责人",
                     date: "2013 - 2015",
                     details: [
@@ -1037,11 +1058,11 @@
             document.getElementById('btnText').textContent = data.btnText;
             document.getElementById('webhookInput').placeholder = data.inputPlaceholder;
             document.getElementById('sendWebhookBtn').textContent = data.sendBtn;
-            document.getElementById('printText').textContent = data.printText;
+            // document.getElementById('printText').textContent = data.printText;
 
             document.getElementById('title-skills').textContent = data.titles.skills;
             document.getElementById('title-experience').textContent = data.titles.experience;
-            document.getElementById('title-education').textContent = data.titles.education;
+            // document.getElementById('title-education').textContent = data.titles.education;
 
             document.getElementById('skills-container').innerHTML = data.skills.map(group => `
                 <div class="skill-group">
@@ -1065,16 +1086,16 @@
                 </div>
             `).join('');
 
-            document.getElementById('education-container').innerHTML = data.education.map(item => `
-                <div class="timeline-item">
-                    <div class="item-header">
-                        <span class="item-title">${item.title}</span>
-                        <span class="item-date">${item.date}</span>
-                    </div>
-                    <div class="item-subtitle">${item.subtitle}</div>
-                    ${item.details.length > 0 ? `<ul class="item-details">${item.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
-                </div>
-            `).join('');
+            // document.getElementById('education-container').innerHTML = data.education.map(item => `
+            //     <div class="timeline-item">
+            //         <div class="item-header">
+            //             <span class="item-title">${item.title}</span>
+            //             <span class="item-date">${item.date}</span>
+            //         </div>
+            //         <div class="item-subtitle">${item.subtitle}</div>
+            //         ${item.details.length > 0 ? `<ul class="item-details">${item.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
+            //     </div>
+            // `).join('');
         }
 
         function toggleTheme() {
@@ -1083,11 +1104,12 @@
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             html.setAttribute('data-theme', newTheme);
             document.getElementById('themeIcon').textContent = newTheme === 'dark' ? '🌙' : '☀️';
-            document.getElementById('themeText').textContent = newTheme === 'dark' ? 'Dark' : 'Light';
+            // document.getElementById('themeText').textContent = newTheme === 'dark' ? 'Dark' : 'Light';
         }
 
         function setupIntersectionObserver() {
             const cards = document.querySelectorAll('.glass-card');
+            const entry = document.querySelectorAll('.timeline-item');
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -1095,64 +1117,122 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.15 });
+            }, { threshold: 0.3 });
 
             cards.forEach(card => observer.observe(card));
+            entry.forEach(entry => observer.observe(entry));
         }
 
+        //--------new
         function setupExpandableContact() {
-            const toggleBtn = document.getElementById('toggleContactBtn');
-            const expandableSection = document.getElementById('expandableContact');
-            const sendBtn = document.getElementById('sendWebhookBtn');
-            const inputField = document.getElementById('webhookInput');
+        const toggleBtn = document.getElementById('toggleContactBtn');
+        const expandableSection = document.getElementById('expandableContact');
+        const sendBtn = document.getElementById('sendWebhookBtn');
+        const inputField = document.getElementById('webhookInput');
 
-            toggleBtn.addEventListener('click', () => {
-                expandableSection.classList.toggle('active');
-            });
+        toggleBtn.addEventListener('click', () => {
+            expandableSection.classList.toggle('active');
+            toggleBtn.classList.toggle('expanded'); // <-- Toggles the transparent state
+        });
 
-            sendBtn.addEventListener('click', () => {
-                const messageText = inputField.value.trim();
-                if (!messageText) {
-                    alert('Please enter a message before sending.');
-                    return;
-                }
-
-                if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes("YOUR_DISCORD_WEBHOOK_ID")) {
-                    alert('Discord Webhook URL is not configured yet. Please update DISCORD_WEBHOOK_URL in the script.');
-                    return;
-                }
-
-                sendBtn.textContent = 'Sending...';
-                sendBtn.disabled = true;
-
-                const payload = {
-                    content: `📩 **New CV Message:**\\n> ${messageText}`
-                };
-
-                fetch(DISCORD_WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => {
-                    if (response.ok || response.status === 204) {
-                        alert('Message sent successfully to Discord!');
-                        inputField.value = '';
-                        expandableSection.classList.remove('active');
-                    } else {
-                        alert('Failed to send message. Check webhook URL.');
-                    }
-                })
-                .catch(err => {
-                    console.error('Webhook error:', err);
-                    alert('Error connecting to Discord webhook.');
-                })
-                .finally(() => {
-                    sendBtn.textContent = 'Send Message';
-                    sendBtn.disabled = false;
-                });
-            });
+        sendBtn.addEventListener('click', () => {
+        const messageText = inputField.value.trim();
+        if (!messageText) {
+            alert('Please enter a message before sending.');
+            return;
         }
+
+        if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes("YOUR_DISCORD_WEBHOOK_ID")) {
+            alert('Discord Webhook URL is not configured yet. Please update DISCORD_WEBHOOK_URL in the script.');
+            return;
+        }
+
+        sendBtn.textContent = 'Sending...';
+        sendBtn.disabled = true;
+
+        const payload = {
+            content: `📩 **New CV Message:**\n> ${messageText}`
+        };
+
+        fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (response.ok || response.status === 204) {
+                // alert('Message sent successfully to Discord!');
+                inputField.value = '';
+                expandableSection.classList.remove('active');
+                toggleBtn.classList.remove('expanded'); // <-- Reset button style on success
+            } else {
+                alert('Failed to send message. Check webhook URL.');
+            }
+        })
+        .catch(err => {
+            console.error('Webhook error:', err);
+            alert('Error connecting to Discord webhook.');
+        })
+        .finally(() => {
+            sendBtn.textContent = 'Send Message';
+            sendBtn.disabled = false;
+        });
+    });
+}
+        //--------old
+        // function setupExpandableContact() {
+        //     const toggleBtn = document.getElementById('toggleContactBtn');
+        //     const expandableSection = document.getElementById('expandableContact');
+        //     const sendBtn = document.getElementById('sendWebhookBtn');
+        //     const inputField = document.getElementById('webhookInput');
+
+        //     toggleBtn.addEventListener('click', () => {
+        //         expandableSection.classList.toggle('active');
+        //     });
+
+        //     sendBtn.addEventListener('click', () => {
+        //         const messageText = inputField.value.trim();
+        //         if (!messageText) {
+        //             alert('Please enter a message before sending.');
+        //             return;
+        //         }
+
+        //         if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes("YOUR_DISCORD_WEBHOOK_ID")) {
+        //             alert('Discord Webhook URL is not configured yet. Please update DISCORD_WEBHOOK_URL in the script.');
+        //             return;
+        //         }
+
+        //         sendBtn.textContent = 'Sending...';
+        //         sendBtn.disabled = true;
+
+        //         const payload = {
+        //             content: `📩 **New CV Message:**\\n> ${messageText}`
+        //         };
+
+        //         fetch(DISCORD_WEBHOOK_URL, {
+        //             method: 'POST',
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify(payload)
+        //         })
+        //         .then(response => {
+        //             if (response.ok || response.status === 204) {
+        //                 alert('Message sent successfully!');
+        //                 inputField.value = '';
+        //                 expandableSection.classList.remove('active');
+        //             } else {
+        //                 alert('Failed to send message. Check webhook URL.');
+        //             }
+        //         })
+        //         .catch(err => {
+        //             console.error('Webhook error:', err);
+        //             alert('Error connecting to Discord webhook.');
+        //         })
+        //         .finally(() => {
+        //             sendBtn.textContent = 'Send Message';
+        //             sendBtn.disabled = false;
+        //         });
+        //     });
+        // }
 
         function getInitialLanguage() {
             const sysLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
@@ -1177,7 +1257,7 @@
             setupIntersectionObserver();
         });
 
-        //pageview-----------------
+        //pageview-webhook-start----------------
         const payload = {
         "content": "CV view \n" + new Date().toISOString() +
             ", \n Page Title: " + document.title +
@@ -1198,6 +1278,7 @@
             },
             body: JSON.stringify(payload)
         }).catch(err => console.error("Webhook notification error:", err));
+        //pageview-webhook-end-------------
     </script>
 </body>
 
