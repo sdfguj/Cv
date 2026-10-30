@@ -431,6 +431,43 @@
             left: 0;
             color: var(--accent);
         }
+        /* --- Ultra-Minimal Footer --- */
+        
+        footer {
+            max-width: 900px;
+            margin: 4rem auto 3rem auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--glass-border);
+            padding-top: 2rem;
+        }
+        
+        .footer-text {
+            opacity: 0.75;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
         /* Printer Friendly Styles */
         
         @media print {
@@ -473,37 +510,8 @@
             .timeline-item::before {
                 color: #000 !important;
             }
-            /* --- Ultra-Minimal Footer --- */
-            footer {
-                max-width: 900px;
-                margin: 4rem auto 3rem auto;
-                padding: 0 1.5rem;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 1rem;
-                font-size: 0.85rem;
-                color: var(--text-secondary);
-                border-top: 1px solid var(--glass-border);
-                padding-top: 2rem;
-            }
-            .footer-text {
-                opacity: 0.75;
-            }
-            .footer-links {
-                display: flex;
-                gap: 1.5rem;
-                list-style: none;
-            }
-            .footer-links a {
-                color: var(--text-secondary);
-                text-decoration: none;
-                font-weight: 500;
-                transition: color 0.2s ease;
-            }
-            .footer-links a:hover {
-                color: var(--accent);
+            .timeline-item {
+                opacity: 1 !important;
             }
             /* Hide when printing */
             @media print {
