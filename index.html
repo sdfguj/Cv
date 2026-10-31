@@ -562,7 +562,7 @@
 </head>
 
 <body>
-
+    <canvas id="confettiCanvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999;"></canvas>
     <div class="ambient-bg">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -1217,60 +1217,115 @@
 
         //--------new
         function setupExpandableContact() {
-            const toggleBtn = document.getElementById('toggleContactBtn');
-            const expandableSection = document.getElementById('expandableContact');
-            const sendBtn = document.getElementById('sendWebhookBtn');
-            const inputField = document.getElementById('webhookInput');
+                const toggleBtn = document.getElementById('toggleContactBtn');
+                const expandableSection = document.getElementById('expandableContact');
+                const sendBtn = document.getElementById('sendWebhookBtn');
+                const inputField = document.getElementById('webhookInput');
 
-            toggleBtn.addEventListener('click', () => {
-                expandableSection.classList.toggle('active');
-                toggleBtn.classList.toggle('expanded'); // <-- Toggles the transparent state
-            });
+                toggleBtn.addEventListener('click', () => {
+                    expandableSection.classList.toggle('active');
+                    toggleBtn.classList.toggle('expanded'); // <-- Toggles the transparent state
+                });
 
-            sendBtn.addEventListener('click', () => {
-            const messageText = inputField.value.trim();
-            if (!messageText) {
-                alert('Please enter a message before sending.');
-                return;
-            }
-
-            if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes("YOUR_DISCORD_WEBHOOK_ID")) {
-                alert('Discord Webhook URL is not configured yet. Please update DISCORD_WEBHOOK_URL in the script.');
-                return;
-            }
-
-            sendBtn.textContent = 'Sending...';
-            sendBtn.disabled = true;
-
-            const payload = {
-                content: `📩 **New CV Message:**\n> ${messageText}`
-            };
-
-            fetch(DISCORD_WEBHOOK_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(response => {
-                if (response.ok || response.status === 204) {
-                    // alert('Message sent successfully to Discord!');
-                    inputField.value = '';
-                    expandableSection.classList.remove('active');
-                    toggleBtn.classList.remove('expanded'); // <-- Reset button style on success
-                } else {
-                    alert('Failed to send message. Check webhook URL.');
+                sendBtn.addEventListener('click', () => {
+                const messageText = inputField.value.trim();
+                if (!messageText) {
+                    alert('Please enter a message before sending.');
+                    return;
                 }
-            })
-            .catch(err => {
-                console.error('Webhook error:', err);
-                alert('Error connecting to Discord webhook.');
-            })
-            .finally(() => {
-                sendBtn.textContent = 'Send Message';
-                sendBtn.disabled = false;
+
+                if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes("YOUR_DISCORD_WEBHOOK_ID")) {
+                    alert('Discord Webhook URL is not configured yet. Please update DISCORD_WEBHOOK_URL in the script.');
+                    return;
+                }
+
+                sendBtn.textContent = 'Sending...';
+                sendBtn.disabled = true;
+
+                const payload = {
+                    content: `📩 **New CV Message:**\n> ${messageText}`
+                };
+
+                fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (response.ok || response.status === 204) {
+                        // alert('Message sent successfully to Discord!');
+                        launchConfetti();
+                        inputField.value = '';
+                        expandableSection.classList.remove('active');
+                        toggleBtn.classList.remove('expanded'); // <-- Reset button style on success
+                    } else {
+                        alert('Failed to send message. Check webhook URL.');
+                    }
+                })
+                .catch(err => {
+                    console.error('Webhook error:', err);
+                    alert('Error connecting to Discord webhook.');
+                })
+                .finally(() => {
+                    sendBtn.textContent = 'Send Message';
+                    sendBtn.disabled = false;
+                });
             });
-        });
-    }
+        }
+
+        function launchConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const particleCount = 50;
+            const colors = ['#38bdf8', '#818cf8', '#6366f1', '#a855f7', '#ec4899', '#ffffff'];
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedY: Math.random() * 4 + 2,
+                    speedX: Math.random() * 2 - 1,
+                    rotation: Math.random() * 360,
+                    rotationSpeed: Math.random() * 10 - 5
+                });
+            }
+
+            let animationFrame;
+            const startTime = Date.now();
+            const duration = 10000; // 2.5 seconds total rain duration
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.rotation += p.rotationSpeed;
+
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+
+                if (Date.now() - startTime < duration) {
+                    animationFrame = requestAnimationFrame(animate);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    cancelAnimationFrame(animationFrame);
+                }
+            }
+
+            animate();
+        }
         //--------old
         // function setupExpandableContact() {
         //     const toggleBtn = document.getElementById('toggleContactBtn');
