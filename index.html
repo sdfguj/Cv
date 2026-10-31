@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Akmalkhon Ibragimov - CV</title>
     <style>
-     :root {
+         :root {
             --bg-gradient-start: #0a0f1d;
             --bg-gradient-end: #04060b;
             --glass-bg: rgba(255, 255, 255, 0.05);
@@ -175,6 +175,43 @@
         .action-btn:hover {
             border-color: var(--accent);
             color: var(--accent);
+        }
+        /* Mobile Cycling Globe Button - Hidden by default on Desktop */
+        
+        .mobile-lang-btn {
+            display: none;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 8px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            backdrop-filter: blur(20px);
+            box-shadow: inset 0 1px 1px var(--glass-highlight);
+        }
+        
+        .mobile-lang-btn:hover {
+            border-color: var(--accent);
+        }
+        
+        .globe-icon {
+            font-size: 0.95rem;
+        }
+        /* Mobile Media Query */
+        
+        @media (max-width: 578px) {
+            /* Hide the 3-button switcher bar */
+            .desktop-langs {
+                display: none !important;
+            }
+            /* Show the cycling globe button */
+            .mobile-lang-btn {
+                display: flex !important;
+            }
         }
         
         main {
@@ -521,7 +558,6 @@
                 display: none !important;
             }
         }
-    }
     </style>
 </head>
 
@@ -541,10 +577,19 @@
 
             <div class="controls">
                 <div class="lang-switcher">
-                    <button class="lang-btn active" data-lang="en">EN</button>
-                    <button class="lang-btn" data-lang="ru">РУ</button>
-                    <button class="lang-btn" data-lang="zh">中文</button>
+                    <!-- Desktop Switcher -->
+                    <div class="desktop-langs">
+                        <button class="lang-btn active" data-lang="en">EN</button>
+                        <button class="lang-btn" data-lang="ru">РУ</button>
+                        <button class="lang-btn" data-lang="zh">中文</button>
+                    </div>
+
                 </div>
+                <!-- Mobile Cycling Globe Button -->
+                <button class="mobile-lang-btn" id="mobileLangBtn" aria-label="Cycle Language">
+                    <span class="globe-icon">🌐</span>
+                    <!-- <span id="currentLangCode">EN</span> -->
+                </button>
                 <button class="action-btn" onclick="window.print()">
                     <span id="printText">🖨️</span>
                 </button>
@@ -1078,6 +1123,12 @@
                 btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
             });
 
+            // 2. Update Mobile cycling badge label
+            // const mobileCodeLabel = document.getElementById('currentLangCode');
+            // if (mobileCodeLabel) {
+            //     mobileCodeLabel.textContent = lang.toUpperCase();
+            // }
+
             const data = cvData[lang];
             document.getElementById('name').textContent = data.name;
             // document.getElementById('tech-stack').textContent = data.techStack;
@@ -1123,9 +1174,21 @@
             //         ${item.details.length > 0 ? `<ul class="item-details">${item.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
             //     </div>
             // `).join('');
-        }
 
-    
+            // Save active language state
+            window.currentLang = lang;
+        }
+        
+        // Array of available language keys in order
+        const LANGUAGES = ['en', 'ru', 'zh'];
+
+        // Function to cycle to the next language
+        function cycleLanguage() {
+            const currentIndex = LANGUAGES.indexOf(window.currentLang || 'en');
+            const nextIndex = (currentIndex + 1) % LANGUAGES.length;
+            setLanguage(LANGUAGES[nextIndex]);
+            setupIntersectionObserver();
+        }
 
         function toggleTheme() {
             const html = document.documentElement;
@@ -1277,6 +1340,12 @@
                     setupIntersectionObserver();
                 });
             });
+
+            // Mobile globe button click (cycles EN -> RU -> ZH -> EN)
+            const mobileBtn = document.getElementById('mobileLangBtn');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', cycleLanguage);
+            }
 
             document.getElementById('themeBtn').addEventListener('click', toggleTheme);
 
