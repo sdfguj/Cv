@@ -53,7 +53,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 110vh;
+            height: 100vh;
             overflow: hidden;
             z-index: -1;
             pointer-events: none;
@@ -614,7 +614,7 @@
                     <span id="btnText">Get in Touch</span>
                 </button>
                 <div class="expandable-contact" id="expandableContact">
-                    <textarea class="modal-input" id="webhookInput" placeholder="you're welcome for the dark theme. Did you like the confetti?"></textarea>
+                    <textarea class="modal-input" id="webhookInput" placeholder="Do you like confetti?"></textarea>
                     <button class="ios-btn" id="sendWebhookBtn" style="padding: 10px 22px; font-size: 0.95rem;">Send Message</button>
                 </div>
             </div>
@@ -659,7 +659,7 @@
                 // techStack: "Technical Stack: Python, GLSL/HLSL, Unreal Engine 5, Touch Designer, P5.js, AWS",
                 objective: "A full stack developer, looking for interesting projects and collaboration.",
                 btnText: "Get in Touch",
-                inputPlaceholder: "Hi Morty...i love reading about your daily adventures",
+                inputPlaceholder: "You can start by telling me your name and how to get in touch with you...",
                 sendBtn: "Send Message",
                 printText: "Print",
                 titles: {
@@ -1118,6 +1118,8 @@
             }
         };
 
+
+
         function setLanguage(lang) {
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
@@ -1406,7 +1408,6 @@
 
             const initialLang = getInitialLanguage();
             setLanguage(initialLang);
-            
             setupExpandableContact();
             setupIntersectionObserver();
         });
@@ -1434,6 +1435,22 @@
             body: JSON.stringify(payload)
         }).catch(err => console.error("Webhook notification error:", err));
         //pageview-webhook-end-------------
+
+        // messaging with morty------
+        async function chat() {
+            try{
+            const MESSAGING_URL = 'https://raw.githubusercontent.com/sdfguj/cvdata/main/messaging.json';
+            messageToMorty = await fetch(MESSAGING_URL);
+            const messageBody = await messageToMorty.json();
+            // cvData.en.inputPlaceholder = messageBody.title;
+            document.getElementById('webhookInput').placeholder = messageBody.message;
+            }
+             catch (err) {
+                console.error('Error loading JSON data:', err);
+            }
+        }
+        chat();
+        // messaging with morty------end
     </script>
 </body>
 
