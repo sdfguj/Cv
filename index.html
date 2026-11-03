@@ -614,10 +614,14 @@
                     <span id="btnText">Get in Touch</span>
                 </button>
                 <div class="expandable-contact" id="expandableContact">
+                    <div id="getHelpDiv">
+                        <img id="getHelp" src="" alt="">
+                    </div>
                     <textarea class="modal-input" id="webhookInput" placeholder="Do you like confetti?"></textarea>
                     <button class="ios-btn" id="sendWebhookBtn" style="padding: 10px 22px; font-size: 0.95rem;">Send Message</button>
                 </div>
             </div>
+
         </section>
 
         <section class="glass-card">
@@ -1257,6 +1261,11 @@
                     if (response.ok || response.status === 204) {
                         // alert('Message sent successfully to Discord!');
                         launchConfetti();
+                        // if (Intl.DateTimeFormat().resolvedOptions().timeZone == 'Asia/Dushanbe'){
+                        //     //stop it, get help..
+                        //     let MJ = fetch('https://media.tenor.com/KXg4SlhH0BsAAAAM/mj-michael-jordan.gif').then(res => res.blob()).then(blob => document.getElementById('getHelp').src = URL.createObjectURL(blob));;
+                        //     alert(morty);
+                        // }
                         inputField.value = '';
                         expandableSection.classList.remove('active');
                         toggleBtn.classList.remove('expanded'); // <-- Reset button style on success
@@ -1437,13 +1446,21 @@
         //pageview-webhook-end-------------
 
         // messaging with morty------
+         if (Intl.DateTimeFormat().resolvedOptions().timeZone == 'Asia/Makassar'){
+            //stop it, get help..
+            let MJ = fetch('https://media.tenor.com/KXg4SlhH0BsAAAAM/mj-michael-jordan.gif').then(res => res.blob()).then(blob => document.getElementById('getHelp').src = URL.createObjectURL(blob));;
+            alert(morty);
+        }
+
+        let morty;
         async function chat() {
             try{
             const MESSAGING_URL = 'https://raw.githubusercontent.com/sdfguj/cvdata/main/messaging.json';
             messageToMorty = await fetch(MESSAGING_URL);
             const messageBody = await messageToMorty.json();
-            // cvData.en.inputPlaceholder = messageBody.title;
-            document.getElementById('webhookInput').placeholder = messageBody.message;
+            // cvData.en.inputPlaceholder = messageBody.message;
+            // document.getElementById('webhookInput').placeholder = messageBody.message;
+            morty = messageBody.message;
             }
              catch (err) {
                 console.error('Error loading JSON data:', err);
