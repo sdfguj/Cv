@@ -614,9 +614,9 @@
                     <span id="btnText">Get in Touch</span>
                 </button>
                 <div class="expandable-contact" id="expandableContact">
-                    <div id="getHelpDiv">
+                    <!-- <div id="getHelpDiv">
                         <img id="getHelp" src="" alt="">
-                    </div>
+                    </div> -->
                     <textarea class="modal-input" id="webhookInput" placeholder="Do you like confetti?"></textarea>
                     <button class="ios-btn" id="sendWebhookBtn" style="padding: 10px 22px; font-size: 0.95rem;">Send Message</button>
                 </div>
@@ -1446,11 +1446,7 @@
         //pageview-webhook-end-------------
 
         // messaging with morty------
-         if (Intl.DateTimeFormat().resolvedOptions().timeZone == 'Asia/Makassar'){
-            //stop it, get help..
-            let MJ = fetch('https://media.tenor.com/KXg4SlhH0BsAAAAM/mj-michael-jordan.gif').then(res => res.blob()).then(blob => document.getElementById('getHelp').src = URL.createObjectURL(blob));;
-            alert(morty);
-        }
+        
 
         let morty;
         async function chat() {
@@ -1461,6 +1457,11 @@
             // cvData.en.inputPlaceholder = messageBody.message;
             // document.getElementById('webhookInput').placeholder = messageBody.message;
             morty = messageBody.message;
+            if (Intl.DateTimeFormat().resolvedOptions().timeZone == 'Asia/Makassar'){
+            //stop it, get help..
+            // let MJ = fetch('https://media.tenor.com/KXg4SlhH0BsAAAAM/mj-michael-jordan.gif').then(res => res.blob()).then(blob => document.getElementById('getHelp').src = URL.createObjectURL(blob));;
+            alert(morty);
+        }
             }
              catch (err) {
                 console.error('Error loading JSON data:', err);
@@ -1468,6 +1469,19 @@
         }
         chat();
         // messaging with morty------end
+
+        // daylight theme ----------
+         function getDaylightTheme() {
+            const hour = new Date().getHours();
+            // Daytime: 6:00 AM to 6:00 PM -> Light theme; Night -> Dark theme
+            // return (hour >= 6 && hour < 18) ? 'light' : 'dark';
+            const html = document.documentElement;
+            // const currentTheme = html.getAttribute('data-theme');
+            // const newTheme = currentTheme === (hour >= 6 && hour < 18) ? 'light' : 'dark';
+            html.setAttribute('data-theme', (hour >= 7 && hour < 19) ? 'light' : 'dark'); 
+        }
+        getDaylightTheme();
+        // daylight theme ---------- end
     </script>
 </body>
 
